@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fredoka", system-ui, sans-serif;
+  --font-sans: "Nunito", system-ui, sans-serif;
+  --color-sun: #ffd54a;
+  --color-sky: #4fc3f7;
+  --color-leaf: #66bb6a;
+  --color-mango: #ff9800;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: #1f3b4d;
+  background:
+    radial-gradient(circle at 10% 10%, #fff7c2 0, transparent 28%),
+    radial-gradient(circle at 90% 5%, #c8f1ff 0, transparent 26%),
+    radial-gradient(circle at 80% 90%, #d7f8d4 0, transparent 30%),
+    linear-gradient(180deg, #fffdf5 0%, #eefaff 100%);
+}
+
+.blob {
+  border-radius: 42% 58% 48% 52% / 52% 42% 58% 48%;
+}
