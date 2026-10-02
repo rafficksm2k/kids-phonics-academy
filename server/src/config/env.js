@@ -11,6 +11,8 @@ for (const key of required) {
 }
 
 export const env = {
+  nodeEnv: process.env.NODE_ENV || 'development',
+  isDev: (process.env.NODE_ENV || 'development') !== 'production',
   port: Number(process.env.PORT) || 5000,
   clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
   mongoUri: process.env.MONGODB_URI || '',

@@ -230,8 +230,34 @@ export async function createRazorpayOrder(req, res, next) {
 export async function verifyRazorpayPayment(req, res, next) {
   try {
     const { orderId, razorpayOrderId, razorpayPaymentId, razorpaySignature } = req.body;
+    console.log('[razorpay/verify] incoming', {
+      orderId,
+      razorpayOrderId,
+      razorpayPaymentId,
+      hasSignature: Boolean(razorpaySignature),
+      secretConfigured: Boolean(env.razorpayKeySecret)
+    });
+
     if (!orderId || !razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
-      return res.status(400).json({ message: 'Missing Razorpay verification fields' });
+      console.warn('[razorpay/verify] 400 missing fields — this route is public (no JWT, no ADMIN_API_KEY)');
+      return res.status(400).json({
+        message: 'Missing Razorpay verification fields',
+        ...(env.isDev
+          ? {
+              details: {
+                hasOrderId: Boolean(orderId),
+                hasRazorpayOrderId: Boolean(razorpayOrderId),
+                hasPaymentId: Boolean(razorpayPaymentId),
+                hasSignature: Boolean(razorpaySignature)
+              }
+            }
+          : {})
+      });
+    }
+
+    if (!env.razorpayKeySecret) {
+      console.error('[razorpay/verify] RAZORPAY_KEY_SECRET is empty');
+      return res.status(503).json({ message: 'Razorpay is not configured' });
     }
 
     const expected = crypto
@@ -240,16 +266,29 @@ export async function verifyRazorpayPayment(req, res, next) {
       .digest('hex');
 
     if (expected !== razorpaySignature) {
-      return res.status(400).json({ message: 'Invalid payment signature' });
+      console.warn('[razorpay/verify] 400 signature mismatch (not 401). Check RAZORPAY_KEY_SECRET matches the key that created the order.');
+      return res.status(400).json({
+        message: 'Invalid payment signature',
+        ...(env.isDev
+          ? {
+              details: {
+                expectedPrefix: expected.slice(0, 8),
+                receivedPrefix: String(razorpaySignature).slice(0, 8)
+              }
+            }
+          : {})
+      });
     }
 
     const order = await Order.findOne({ orderId, providerRef: razorpayOrderId });
     if (!order) {
+      console.warn('[razorpay/verify] 404 order not found', { orderId, razorpayOrderId });
       return res.status(404).json({ message: 'Order not found' });
     }
 
     const product = await Product.findById(order.productId);
     const result = await fulfillPaidOrder(order, product);
+    console.log('[razorpay/verify] 200 paid', result.order.orderId);
     res.json({
       orderId: result.order.orderId,
       token: result.token,

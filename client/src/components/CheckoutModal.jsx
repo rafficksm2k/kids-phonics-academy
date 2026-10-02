@@ -50,8 +50,20 @@ export default function CheckoutModal({ product, onClose }) {
         customerEmail
       });
 
+      const checkoutKey = order.keyId;
+      if (!checkoutKey) {
+        setError('Razorpay key is missing from the server response.');
+        setBusy(false);
+        return;
+      }
+
+      const envKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
+      if (envKey && envKey !== checkoutKey && envKey !== 'rzp_test_xxx') {
+        console.warn('VITE_RAZORPAY_KEY_ID does not match the server key. Using the server keyId.');
+      }
+
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || order.keyId,
+        key: checkoutKey,
         amount: order.amount,
         currency: order.currency,
         name: 'Kids Phonics Academy',
@@ -59,19 +71,37 @@ export default function CheckoutModal({ product, onClose }) {
         order_id: order.razorpayOrderId,
         prefill: { name: customerName, email: customerEmail },
         handler: async (response) => {
-          const result = await api.verifyRazorpay({
-            orderId: order.orderId,
-            razorpayOrderId: response.razorpay_order_id,
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpaySignature: response.razorpay_signature
-          });
-          window.location.href = `/payment/success?token=${result.token}&orderId=${result.orderId}`;
+          try {
+            const result = await api.verifyRazorpay({
+              orderId: order.orderId,
+              razorpayOrderId: response.razorpay_order_id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpaySignature: response.razorpay_signature
+            });
+            window.location.href = `/payment/success?token=${result.token}&orderId=${result.orderId}`;
+          } catch (err) {
+            const params = new URLSearchParams({
+              reason: 'verify',
+              description: err.message || 'Verification failed'
+            });
+            window.location.href = `/payment/failed?${params.toString()}`;
+          }
         }
       };
 
       const checkout = new window.Razorpay(options);
-      checkout.on('payment.failed', () => {
-        window.location.href = '/payment/failed?reason=razorpay';
+      checkout.on('payment.failed', (response) => {
+        const error = response?.error || {};
+        console.error('[Razorpay payment.failed]', error);
+        const params = new URLSearchParams({
+          reason: 'razorpay',
+          code: error.code || '',
+          description: error.description || 'Razorpay checkout failed',
+          source: error.source || '',
+          step: error.step || '',
+          httpStatus: String(error.status || '')
+        });
+        window.location.href = `/payment/failed?${params.toString()}`;
       });
       checkout.open();
       setBusy(false);

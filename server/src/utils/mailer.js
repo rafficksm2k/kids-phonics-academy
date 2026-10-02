@@ -1,5 +1,5 @@
-import nodemailer from 'nodemailer';
-import { env } from '../config/env.js';
+import nodemailer from "nodemailer";
+import { env } from "../config/env.js";
 
 function createTransport() {
   if (!env.smtp.user || !env.smtp.pass) {
@@ -12,14 +12,21 @@ function createTransport() {
     secure: env.smtp.port === 465,
     auth: {
       user: env.smtp.user,
-      pass: env.smtp.pass
-    }
+      pass: env.smtp.pass,
+    },
   });
 }
 
-export async function sendContactNotification({ name, email, message, createdAt }) {
+export async function sendContactNotification({
+  name,
+  email,
+  message,
+  createdAt,
+}) {
   const transporter = createTransport();
-  const date = new Date(createdAt).toLocaleString('en-GB', { timeZone: 'Europe/Berlin' });
+  const date = new Date(createdAt).toLocaleString("en-GB", {
+    timeZone: "Europe/Berlin",
+  });
   const text = `Name:
 ${name}
 
@@ -33,7 +40,7 @@ Date:
 ${date}`;
 
   if (!transporter) {
-    console.warn('[mail] SMTP is not configured. Contact email skipped.');
+    console.warn("[mail] SMTP is not configured. Contact email skipped.");
     console.info(text);
     return { skipped: true };
   }
@@ -42,14 +49,19 @@ ${date}`;
     from: env.contactFrom,
     to: env.adminEmail,
     replyTo: email,
-    subject: 'New Contact Form Submission',
-    text
+    subject: "New Contact Form Submission",
+    text,
   });
 
   return { skipped: false };
 }
 
-export async function sendPurchaseEmail({ to, name, productTitle, downloadUrl }) {
+export async function sendPurchaseEmail({
+  to,
+  name,
+  productTitle,
+  downloadUrl,
+}) {
   const transporter = createTransport();
   const text = `Hi ${name},
 
@@ -62,7 +74,7 @@ Happy learning!
 Kids Phonics Academy`;
 
   if (!transporter) {
-    console.warn('[mail] SMTP is not configured. Purchase email skipped.');
+    console.warn("[mail] SMTP is not configured. Purchase email skipped.");
     return { skipped: true };
   }
 
@@ -70,7 +82,7 @@ Kids Phonics Academy`;
     from: env.contactFrom,
     to,
     subject: `Your ${productTitle} is ready`,
-    text
+    text,
   });
 
   return { skipped: false };

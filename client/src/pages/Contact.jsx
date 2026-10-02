@@ -1,22 +1,23 @@
-import { useState } from 'react';
-import { api } from '../api/client';
+import { useState } from "react";
+import { api } from "../api/client";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const email = import.meta.env.VITE_CONTACT_EMAIL || 'your-email@example.com';
-const phone = import.meta.env.VITE_CONTACT_PHONE || '+49 xxxx xxxx';
+const email = import.meta.env.VITE_CONTACT_EMAIL || "rafficksm2k@example.com";
+const phone = import.meta.env.VITE_CONTACT_PHONE || "+49 174 6065256";
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
 
   function validate() {
     const next = {};
-    if (!form.name.trim()) next.name = 'Name is required';
-    if (!form.email.trim()) next.email = 'Email is required';
-    else if (!EMAIL_REGEX.test(form.email)) next.email = 'Enter a valid email format';
-    if (!form.message.trim()) next.message = 'Message is required';
+    if (!form.name.trim()) next.name = "Name is required";
+    if (!form.email.trim()) next.email = "Email is required";
+    else if (!EMAIL_REGEX.test(form.email))
+      next.email = "Enter a valid email format";
+    if (!form.message.trim()) next.message = "Message is required";
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -25,11 +26,11 @@ export default function Contact() {
     event.preventDefault();
     if (!validate()) return;
     setBusy(true);
-    setStatus('');
+    setStatus("");
     try {
       const result = await api.contact(form);
       setStatus(result.message);
-      setForm({ name: '', email: '', message: '' });
+      setForm({ name: "", email: "", message: "" });
     } catch (error) {
       setStatus(error.message);
     } finally {
@@ -38,16 +39,18 @@ export default function Contact() {
   }
 
   function onCancel() {
-    setForm({ name: '', email: '', message: '' });
+    setForm({ name: "", email: "", message: "" });
     setErrors({});
-    setStatus('');
+    setStatus("");
   }
 
   return (
     <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 lg:grid-cols-2">
       <section>
         <h1 className="font-display text-4xl text-sky-800">Contact us</h1>
-        <p className="mt-3 text-slate-700">We love helping families and classrooms find the right phonics pack.</p>
+        <p className="mt-3 text-slate-700">
+          We love helping families and classrooms find the right phonics pack.
+        </p>
         <div className="mt-6 space-y-3 rounded-3xl bg-white p-6 shadow-lg">
           <p>
             <strong>Email:</strong> {email}
@@ -57,7 +60,7 @@ export default function Contact() {
           </p>
         </div>
         <img
-          src="https://images.unsplash.com/photo-1588072432836-e10032774343?auto=format&fit=crop&w=1000&q=80"
+          src="https://res.cloudinary.com/t1tk69nn/image/upload/v1790886494/contactus_banner.png"
           alt="Children learning together in a colourful classroom"
           className="mt-6 h-72 w-full rounded-3xl object-cover shadow-xl"
         />
@@ -72,7 +75,9 @@ export default function Contact() {
             onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
         </label>
-        {errors.name ? <p className="text-sm font-bold text-red-600">{errors.name}</p> : null}
+        {errors.name ? (
+          <p className="text-sm font-bold text-red-600">{errors.name}</p>
+        ) : null}
         <label className="mt-4 block font-bold">
           Email
           <input
@@ -82,7 +87,9 @@ export default function Contact() {
             onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
         </label>
-        {errors.email ? <p className="text-sm font-bold text-red-600">{errors.email}</p> : null}
+        {errors.email ? (
+          <p className="text-sm font-bold text-red-600">{errors.email}</p>
+        ) : null}
         <label className="mt-4 block font-bold">
           Message
           <textarea
@@ -92,13 +99,27 @@ export default function Contact() {
             onChange={(e) => setForm({ ...form, message: e.target.value })}
           />
         </label>
-        {errors.message ? <p className="text-sm font-bold text-red-600">{errors.message}</p> : null}
-        {status ? <p className="mt-3 rounded-2xl bg-leaf/20 p-3 font-bold text-leaf">{status}</p> : null}
+        {errors.message ? (
+          <p className="text-sm font-bold text-red-600">{errors.message}</p>
+        ) : null}
+        {status ? (
+          <p className="mt-3 rounded-2xl bg-leaf/20 p-3 font-bold text-leaf">
+            {status}
+          </p>
+        ) : null}
         <div className="mt-5 flex gap-3">
-          <button disabled={busy} className="rounded-2xl bg-mango px-5 py-3 font-extrabold text-white" type="submit">
+          <button
+            disabled={busy}
+            className="rounded-2xl bg-mango px-5 py-3 font-extrabold text-white"
+            type="submit"
+          >
             Submit
           </button>
-          <button type="button" onClick={onCancel} className="rounded-2xl bg-slate-100 px-5 py-3 font-extrabold">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-2xl bg-slate-100 px-5 py-3 font-extrabold"
+          >
             Cancel
           </button>
         </div>
