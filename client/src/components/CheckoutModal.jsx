@@ -66,7 +66,7 @@ export default function CheckoutModal({ product, onClose }) {
         key: checkoutKey,
         amount: order.amount,
         currency: order.currency,
-        name: 'Kids Phonics Academy',
+        name: 'Bright Minds Academy',
         description: order.productTitle,
         order_id: order.razorpayOrderId,
         prefill: { name: customerName, email: customerEmail },

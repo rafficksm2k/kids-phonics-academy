@@ -30,5 +30,6 @@ export const api = {
   verifyRazorpay: (body) =>
     request('/payments/razorpay/verify', { method: 'POST', body: JSON.stringify(body) }),
   download: (token) => request(`/download/${token}`),
-  contact: (body) => request('/contact', { method: 'POST', body: JSON.stringify(body) })
+  contact: (body) => request('/contact', { method: 'POST', body: JSON.stringify(body) }),
+  getSettings: () => request('/settings')
 };

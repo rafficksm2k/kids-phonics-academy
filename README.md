@@ -1,6 +1,6 @@
-# Kids Phonics Academy
+# Bright Minds Academy
 
-Production-ready full-stack app for selling phonics PDF workbooks.
+Production-ready full-stack app for selling playful PDF workbooks for brain gym, cognitive development and phonics.
 
 PDFs and thumbnails live in **Cloudinary**. MongoDB stores product metadata, orders, analytics and contact messages. The React storefront never hardcodes the catalogue.
 
@@ -31,6 +31,13 @@ npm install
 ```
 
 Set `MONGODB_URI`, `JWT_SECRET`, `ADMIN_API_KEY`, Cloudinary, Stripe, Razorpay and SMTP values in `server/.env`.
+
+```bash
+npm run migrate:categories
+npm run dev
+```
+
+`migrate:categories` maps existing products to `phonics` / `brain-exercise` plus a `subCategory`, and inserts dummy packs if a sub-category has fewer than 3 items. It does not overwrite titles, prices or Cloudinary URLs.
 
 ```bash
 npm run seed

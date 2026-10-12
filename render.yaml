@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: kids-phonics-academy-api
+    name: bright-minds-academy-api
     runtime: node
     rootDir: server
     buildCommand: npm install

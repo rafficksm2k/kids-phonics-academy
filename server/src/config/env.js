@@ -34,5 +34,9 @@ export const env = {
     pass: process.env.SMTP_PASS || ''
   },
   adminEmail: process.env.ADMIN_EMAIL || 'admin@example.com',
-  contactFrom: process.env.CONTACT_FROM_EMAIL || 'Kids Phonics Academy <noreply@example.com>'
+  contactFrom: process.env.CONTACT_FROM_EMAIL || 'Bright Minds Academy <noreply@example.com>',
+  facebookUrl: process.env.FACEBOOK_URL || '',
+  instagramUrl: process.env.INSTAGRAM_URL || '',
+  contactEmail: process.env.CONTACT_EMAIL || process.env.ADMIN_EMAIL || '',
+  phoneNumber: process.env.PHONE_NUMBER || ''
 };

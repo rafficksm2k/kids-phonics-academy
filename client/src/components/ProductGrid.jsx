@@ -4,7 +4,7 @@ export default function ProductGrid({ products, onPreview, onBuy }) {
   if (!products.length) {
     return (
       <div className="rounded-3xl bg-white p-10 text-center shadow">
-        <p className="font-display text-2xl text-sky-700">No phonics packs found</p>
+        <p className="font-display text-2xl text-sky-700">No packs found</p>
         <p className="mt-2 text-slate-600">Try another category or search term.</p>
       </div>
     );

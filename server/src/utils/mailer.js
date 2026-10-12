@@ -65,13 +65,13 @@ export async function sendPurchaseEmail({
   const transporter = createTransport();
   const text = `Hi ${name},
 
-Thank you for purchasing ${productTitle} from Kids Phonics Academy.
+Thank you for purchasing ${productTitle} from Bright Minds Academy.
 
 Your secure download link (valid for 7 days):
 ${downloadUrl}
 
 Happy learning!
-Kids Phonics Academy`;
+Bright Minds Academy`;
 
   if (!transporter) {
     console.warn("[mail] SMTP is not configured. Purchase email skipped.");

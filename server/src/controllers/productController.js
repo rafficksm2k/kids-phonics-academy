@@ -6,6 +6,7 @@ const PUBLIC_FIELDS = [
   'title',
   'description',
   'category',
+  'subCategory',
   'priceEUR',
   'priceINR',
   'thumbnailUrl',
@@ -30,30 +31,37 @@ export async function listProducts(req, res, next) {
     const limit = Math.min(48, Math.max(1, Number(req.query.limit) || 12));
     const search = String(req.query.search || '').trim();
     const category = String(req.query.category || '').trim();
+    const subCategory = String(req.query.subCategory || '').trim();
 
     const filter = { active: true };
     if (category && category !== 'All') {
       filter.category = category;
+    }
+    if (subCategory) {
+      filter.subCategory = subCategory;
     }
     if (search) {
       filter.$or = [
         { title: { $regex: search, $options: 'i' } },
         { description: { $regex: search, $options: 'i' } },
         { productCode: { $regex: search, $options: 'i' } },
-        { category: { $regex: search, $options: 'i' } }
+        { category: { $regex: search, $options: 'i' } },
+        { subCategory: { $regex: search, $options: 'i' } }
       ];
     }
 
     const skip = (page - 1) * limit;
-    const [items, total, categories] = await Promise.all([
+    const [items, total, categories, subCategories] = await Promise.all([
       Product.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
       Product.countDocuments(filter),
-      Product.distinct('category', { active: true })
+      Product.distinct('category', { active: true }),
+      Product.distinct('subCategory', { active: true })
     ]);
 
     res.json({
       products: items.map(toPublicProduct),
       categories: categories.sort(),
+      subCategories: subCategories.sort(),
       pagination: {
         page,
         limit,
