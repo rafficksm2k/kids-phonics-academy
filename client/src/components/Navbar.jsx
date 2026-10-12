@@ -1,4 +1,5 @@
 import { NavLink, Link } from 'react-router-dom';
+import BrandMark from './BrandMark';
 
 const links = [
   { to: '/', label: 'Home' },
@@ -11,12 +12,10 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 border-b-4 border-mango bg-white/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link to="/" className="flex items-center gap-3">
-          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-sun text-2xl shadow-md">
-            🔤
-          </span>
+          <BrandMark />
           <div>
-            <p className="font-display text-xl font-bold text-sky-700">Kids Phonics Academy</p>
-            <p className="text-xs font-semibold text-mango">Sounds, smiles & stories</p>
+            <p className="font-display text-xl font-bold text-sky-700">Bright Minds Academy</p>
+            <p className="text-xs font-semibold text-mango">Think, focus, grow</p>
           </div>
         </Link>
         <nav className="flex items-center gap-1 sm:gap-3">

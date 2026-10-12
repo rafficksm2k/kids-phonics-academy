@@ -9,6 +9,7 @@ import productRoutes from './routes/productRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import downloadRoutes from './routes/downloadRoutes.js';
+import settingsRoutes from './routes/settingsRoutes.js';
 import { stripeWebhook } from './controllers/paymentController.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
 
@@ -34,13 +35,14 @@ app.post(
 app.use(express.json({ limit: '1mb' }));
 
 app.get('/api/health', (req, res) => {
-  res.json({ ok: true, service: 'kids-phonics-academy-api' });
+  res.json({ ok: true, service: 'bright-minds-academy-api' });
 });
 
 app.use('/api/products', productRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/download', downloadRoutes);
+app.use('/api/settings', settingsRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

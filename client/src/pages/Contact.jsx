@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { api } from "../api/client";
+import { useSiteSettings } from "../hooks/useSiteSettings";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const email = import.meta.env.VITE_CONTACT_EMAIL || "rafficksm2k@example.com";
-const phone = import.meta.env.VITE_CONTACT_PHONE || "+49 174 6065256";
 
 export default function Contact() {
+  const settings = useSiteSettings();
+  const email = settings.contactEmail || "rafficksm2k@example.com";
+  const phone = settings.phoneNumber || "+49 174 6065256";
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("");
@@ -49,7 +51,7 @@ export default function Contact() {
       <section>
         <h1 className="font-display text-4xl text-sky-800">Contact us</h1>
         <p className="mt-3 text-slate-700">
-          We love helping families and classrooms find the right phonics pack.
+          We love helping families and classrooms find the right brain gym and learning pack.
         </p>
         <div className="mt-6 space-y-3 rounded-3xl bg-white p-6 shadow-lg">
           <p>
@@ -60,7 +62,7 @@ export default function Contact() {
           </p>
         </div>
         <img
-          src="https://res.cloudinary.com/t1tk69nn/image/upload/v1790886494/contactus_banner.png"
+          src="../src/assets/images/contact.jpg"
           alt="Children learning together in a colourful classroom"
           className="mt-6 h-72 w-full rounded-3xl object-cover shadow-xl"
         />
