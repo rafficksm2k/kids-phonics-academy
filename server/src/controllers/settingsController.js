@@ -4,12 +4,7 @@ import { env } from '../config/env.js';
 async function getSettingsDoc() {
   let doc = await SiteSettings.findOne();
   if (!doc) {
-    doc = await SiteSettings.create({
-      facebookUrl: '',
-      instagramUrl: '',
-      contactEmail: '',
-      phoneNumber: ''
-    });
+    doc = await SiteSettings.create({});
   }
   return doc;
 }
@@ -26,7 +21,16 @@ export async function getPublicSettings(req, res, next) {
 export async function updateSettings(req, res, next) {
   try {
     const doc = await getSettingsDoc();
-    const fields = ['facebookUrl', 'instagramUrl', 'contactEmail', 'phoneNumber'];
+    const fields = [
+      'academyName',
+      'footerText',
+      'logoUrl',
+      'heroBannerUrl',
+      'facebookUrl',
+      'instagramUrl',
+      'contactEmail',
+      'phoneNumber'
+    ];
     for (const field of fields) {
       if (req.body[field] !== undefined) {
         doc[field] = String(req.body[field] || '').trim();
@@ -45,10 +49,16 @@ function toPublicSettings(doc) {
   const contactEmail = doc.contactEmail || env.contactEmail || '';
   const phoneNumber = doc.phoneNumber || env.phoneNumber || '';
   return {
+    academyName: doc.academyName || 'Bright Minds Academy',
+    footerText:
+      doc.footerText ||
+      'Playful PDF workbooks for brain training, memory activities, concentration exercises and cognitive development.',
+    logoUrl: doc.logoUrl || '',
+    heroBannerUrl: doc.heroBannerUrl || '',
     facebookUrl,
     instagramUrl,
     contactEmail,
     phoneNumber,
-    source: doc.facebookUrl || doc.instagramUrl || doc.contactEmail || doc.phoneNumber ? 'database' : 'env'
+    source: doc.facebookUrl || doc.instagramUrl || doc.contactEmail || doc.phoneNumber || doc.logoUrl ? 'database' : 'env'
   };
 }

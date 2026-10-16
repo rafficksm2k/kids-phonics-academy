@@ -10,8 +10,10 @@ import paymentRoutes from './routes/paymentRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import downloadRoutes from './routes/downloadRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 import { stripeWebhook } from './controllers/paymentController.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
+import { bootstrapAdmin } from './utils/bootstrapAdmin.js';
 
 const app = express();
 
@@ -32,7 +34,7 @@ app.post(
   stripeWebhook
 );
 
-app.use(express.json({ limit: '1mb' }));
+app.use(express.json({ limit: '2mb' }));
 
 app.get('/api/health', (req, res) => {
   res.json({ ok: true, service: 'bright-minds-academy-api' });
@@ -43,12 +45,14 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/download', downloadRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
 
 connectDb()
-  .then(() => {
+  .then(async () => {
+    await bootstrapAdmin();
     app.listen(env.port, () => {
       console.log(`API listening on port ${env.port}`);
     });

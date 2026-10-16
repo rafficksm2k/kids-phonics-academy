@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { getPublicSettings, updateSettings } from '../controllers/settingsController.js';
-import { requireAdmin } from '../middleware/errorHandler.js';
+import { requireAdminAuth } from '../middleware/auth.js';
 
 const router = Router();
 router.get('/', getPublicSettings);
-router.put('/', requireAdmin, updateSettings);
+router.put('/', requireAdminAuth, updateSettings);
 
 export default router;

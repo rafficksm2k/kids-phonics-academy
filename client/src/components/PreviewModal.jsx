@@ -8,6 +8,7 @@ export default function PreviewModal({ product, onClose, onBuy }) {
         <p className="mt-4 text-xs font-bold uppercase text-mango">{product.category}</p>
         <h3 className="font-display text-3xl text-sky-800">{product.title}</h3>
         <p className="mt-2 text-slate-600">{product.description}</p>
+        {product.longDescription ? <p className="mt-2 text-sm text-slate-500">{product.longDescription}</p> : null}
         <p className="mt-4 font-extrabold text-mango">
           €{Number(product.priceEUR).toFixed(2)} · ₹{Number(product.priceINR).toFixed(0)}
         </p>

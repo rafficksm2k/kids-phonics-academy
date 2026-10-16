@@ -39,6 +39,8 @@ npm run dev
 
 `migrate:categories` maps existing products to `phonics` / `brain-exercise` plus a `subCategory`, and inserts dummy packs if a sub-category has fewer than 3 items. It does not overwrite titles, prices or Cloudinary URLs.
 
+Admin dashboard is at `/admin` (not linked in the public nav). On first API start an admin user is created from `ADMIN_USERNAME` / `ADMIN_PASSWORD` (defaults: `brightmindsadmin` / `BrightMinds@2026Secure`). Passwords are stored as bcrypt hashes. Change them in production.
+
 ```bash
 npm run seed
 npm run dev

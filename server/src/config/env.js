@@ -18,6 +18,8 @@ export const env = {
   mongoUri: process.env.MONGODB_URI || '',
   jwtSecret: process.env.JWT_SECRET || 'dev-only-secret-change-me',
   adminApiKey: process.env.ADMIN_API_KEY || '',
+  adminUsername: (process.env.ADMIN_USERNAME || 'brightmindsadmin').toLowerCase(),
+  adminPassword: process.env.ADMIN_PASSWORD || 'BrightMinds@2026Secure',
   cloudinary: {
     cloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
     apiKey: process.env.CLOUDINARY_API_KEY || '',

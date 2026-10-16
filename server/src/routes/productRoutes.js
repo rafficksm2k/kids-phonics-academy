@@ -6,14 +6,14 @@ import {
   updateProduct,
   deleteProduct
 } from '../controllers/productController.js';
-import { requireAdmin } from '../middleware/errorHandler.js';
+import { requireAdminAuth } from '../middleware/auth.js';
 
 const router = Router();
 
 router.get('/', listProducts);
 router.get('/:id', getProduct);
-router.post('/', requireAdmin, createProduct);
-router.put('/:id', requireAdmin, updateProduct);
-router.delete('/:id', requireAdmin, deleteProduct);
+router.post('/', requireAdminAuth, createProduct);
+router.put('/:id', requireAdminAuth, updateProduct);
+router.delete('/:id', requireAdminAuth, deleteProduct);
 
 export default router;

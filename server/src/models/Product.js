@@ -8,6 +8,8 @@ const productSchema = new mongoose.Schema(
     productCode: { type: String, required: true, unique: true, trim: true },
     title: { type: String, required: true, trim: true },
     description: { type: String, required: true, trim: true },
+    longDescription: { type: String, default: '', trim: true },
+    featured: { type: Boolean, default: false, index: true },
     category: {
       type: String,
       required: true,

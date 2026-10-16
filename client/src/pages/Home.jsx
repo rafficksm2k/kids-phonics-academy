@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useSiteSettings } from '../hooks/useSiteSettings';
 
 const IMAGES = {
   hero: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1400&q=80',
@@ -30,6 +31,8 @@ const testimonials = [
 ];
 
 export default function Home() {
+  const settings = useSiteSettings();
+  const heroImage = settings.heroBannerUrl || '../src/assets/images/brain_gym.webp';
   return (
     <div>
       <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-10 lg:grid-cols-2">
@@ -57,7 +60,7 @@ export default function Home() {
           <div className="blob absolute -left-6 -top-6 h-40 w-40 bg-sun/70" />
           <div className="blob absolute -bottom-8 -right-4 h-36 w-36 bg-leaf/60" />
           <img
-            src="../src/assets/images/brain_gym.webp"
+            src={heroImage}
             alt="Children exploring colourful brain-building activities"
             className="relative z-10 aspect-[4/3] w-full rounded-[2.5rem] border-8 border-white object-cover shadow-2xl"
           />

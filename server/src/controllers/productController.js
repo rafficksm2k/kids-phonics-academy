@@ -5,6 +5,8 @@ const PUBLIC_FIELDS = [
   'productCode',
   'title',
   'description',
+  'longDescription',
+  'featured',
   'category',
   'subCategory',
   'priceEUR',

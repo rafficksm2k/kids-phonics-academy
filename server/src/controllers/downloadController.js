@@ -1,5 +1,6 @@
 import { Order } from "../models/Order.js";
 import { Product } from "../models/Product.js";
+import { DownloadEvent } from "../models/DownloadEvent.js";
 import { signedPdfUrl } from "../config/cloudinary.js";
 import { bumpAnalytics } from "../utils/analytics.js";
 import { verifyDownloadToken } from "../utils/downloadToken.js";
@@ -26,6 +27,14 @@ export async function downloadPdf(req, res, next) {
     order.downloadCount += 1;
     await order.save();
     await bumpAnalytics(product._id, "downloads");
+    await DownloadEvent.create({
+      orderId: order.orderId,
+      productId: product._id,
+      productCode: product.productCode,
+      productTitle: product.title,
+      category: product.category || "",
+      customerEmail: order.customerEmail
+    });
 
     const url = signedPdfUrl(product.pdfUrl);
     res.json({

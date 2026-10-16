@@ -22,4 +22,7 @@ const orderSchema = new mongoose.Schema(
   { timestamps: { createdAt: true, updatedAt: true } }
 );
 
+orderSchema.index({ paymentStatus: 1, createdAt: -1 });
+orderSchema.index({ productId: 1, paymentStatus: 1 });
+
 export const Order = mongoose.model('Order', orderSchema);

@@ -10,10 +10,10 @@ export default function Footer() {
     <footer className="mt-16 border-t-4 border-leaf bg-sky-700 text-white">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-3">
         <div>
-          <p className="font-display text-2xl">Bright Minds Academy</p>
+          <p className="font-display text-2xl">{settings.academyName || 'Bright Minds Academy'}</p>
           <p className="mt-2 text-sky-100">
-            Playful PDF workbooks for brain training, memory activities, concentration exercises and cognitive
-            development.
+            {settings.footerText ||
+              'Playful PDF workbooks for brain training, memory activities, concentration exercises and cognitive development.'}
           </p>
         </div>
         <div>
@@ -32,7 +32,7 @@ export default function Footer() {
       </div>
       <div className="border-t border-white/20">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-5 sm:flex-row">
-          <p className="text-sm text-sky-100">© {year} Bright Minds Academy. All rights reserved.</p>
+          <p className="text-sm text-sky-100">© {year} {settings.academyName || 'Bright Minds Academy'}. All rights reserved.</p>
           <SocialLinks facebookUrl={settings.facebookUrl} instagramUrl={settings.instagramUrl} />
         </div>
       </div>
